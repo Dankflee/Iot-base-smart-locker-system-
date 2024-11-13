@@ -1,0 +1,28 @@
+graph TD
+    A[Start] --> B[Initialize WiFi, Web Server, Buzzer, Motion Sensor, RFID Reader]
+    B --> C{Wait for Input}
+    C --> |Web Request| D[Handle Web Request]
+    C --> |Motion Detected| E{Locker Opened Without Passkey?}
+    C --> |Keypad Input| F[Process Keypad Input]
+    C --> |RFID Detected| G[Process RFID Input]
+    D --> H{Request Type?}
+    H --> |Status| I[Send Locker Status]
+    H --> |Enter Passkey| J{Correct Passkey?}
+    E --> |Yes| K[Sound Buzzer Alert]
+    E --> |No| C
+    F --> L{Key Pressed?}
+    L --> |#| M{Correct Passkey?}
+    L --> |Other Key| N[Append to Entered Passkey]
+    G --> O{Valid RFID?}
+    I --> C
+    J --> |Yes| P[Grant Access]
+    J --> |No| Q[Deny Access]
+    K --> C
+    M --> |Yes| P
+    M --> |No| Q
+    N --> C
+    O --> |Yes| P
+    O --> |No| Q
+    P --> C
+    Q --> R[Sound Buzzer Alert]
+    R --> C
